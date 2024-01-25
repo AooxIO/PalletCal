@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallet Time Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #003d82;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e7f3fe;
+    border-left: 4px solid #0056b3;
+    color: #0056b3;
+}
+    </style>
+<body>
+    <div class="container">
+        <h1>Pallet Time Calculator</h1>
+        <div class="input-group">
+            <label for="workers">Number of Workers:</label>
+            <input type="number" id="workers" min="1">
+        </div>
+        <div class="input-group">
+            <label for="halfPallets">Half Pallets:</label>
+            <input type="number" id="halfPallets" min="0">
+        </div>
+        <div class="input-group">
+            <label for="wholePallets">Whole Pallets:</label>
+            <input type="number" id="wholePallets" min="0">
+        </div>
+        <div class="input-group">
+            <label for="mixPallets">Mix Pallets:</label>
+            <input type="number" id="mixPallets" min="0">
+        </div>
+        <button id="calculate">Calculate Time</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('calculate').addEventListener('click', function() {
+    const workers = parseInt(document.getElementById('workers').value) || 0;
+    const halfPallets = parseInt(document.getElementById('halfPallets').value) || 0;
+    const wholePallets = parseInt(document.getElementById('wholePallets').value) || 0;
+    const mixPallets = parseInt(document.getElementById('mixPallets').value) || 0;
+
+    const totalMinutes = (halfPallets * 5) + (wholePallets * 15) + (mixPallets * 20);
+    const timePerWorker = workers > 0 ? Math.ceil(totalMinutes / workers) : 0;
+
+    const hours = Math.floor(timePerWorker / 60);
+    const minutes = timePerWorker % 60;
+
+    const resultText = workers > 0 ? `Total time required: ${hours} hours and ${minutes} minutes` : "Please enter a valid number of workers.";
+    document.getElementById('result').textContent = resultText;
+});
+
+    </script>
+</body>
+</html>
