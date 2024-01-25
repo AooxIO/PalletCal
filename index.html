@@ -77,6 +77,10 @@ button:hover {
             <label for="wholePallets">Whole Pallets:</label>
             <input type="number" id="wholePallets" min="0">
         </div>
+<div class="input-group">
+    <label for="unpackPallets">Unpack Pallets:</label>
+    <input type="number" id="unpackPallets" min="0">
+</div>
         <div class="input-group">
             <label for="mixPallets">Mix Pallets:</label>
             <input type="number" id="mixPallets" min="0">
@@ -85,21 +89,32 @@ button:hover {
         <div id="result"></div>
     </div>
     <script>
-        document.getElementById('calculate').addEventListener('click', function() {
+     
+document.getElementById('calculate').addEventListener('click', function() {
     const workers = parseInt(document.getElementById('workers').value) || 0;
     const halfPallets = parseInt(document.getElementById('halfPallets').value) || 0;
     const wholePallets = parseInt(document.getElementById('wholePallets').value) || 0;
     const mixPallets = parseInt(document.getElementById('mixPallets').value) || 0;
+    const unpackPallets = parseInt(document.getElementById('unpackPallets').value) || 0;
 
-    const totalMinutes = (halfPallets * 5) + (wholePallets * 15) + (mixPallets * 20);
-    const timePerWorker = workers > 0 ? Math.ceil(totalMinutes / workers) : 0;
+    if (workers <= 0 || halfPallets < 0 || wholePallets < 0 || mixPallets < 0 || unpackPallets < 0) {
+        document.getElementById('result').textContent = "Please enter valid positive numbers.";
+        return;
+    }
+
+    const totalMinutes = (halfPallets * 5) + (wholePallets * 10) + (mixPallets * 20) + (unpackPallets * 15);
+    const timePerWorker = Math.ceil(totalMinutes / workers);
 
     const hours = Math.floor(timePerWorker / 60);
     const minutes = timePerWorker % 60;
+    const totalTimeAvailable = 3 * 60 + 30; // 3 hours and 30 minutes
+    const efficiency = ((totalTimeAvailable - timePerWorker) / totalTimeAvailable) * 100;
+    const efficiencyText = efficiency >= 0 ? `Efficiency: ${efficiency.toFixed(2)}%` : "Inefficient: More time required than available.";
 
-    const resultText = workers > 0 ? `Total time required: ${hours} hours and ${minutes} minutes` : "Please enter a valid number of workers.";
+    const resultText = `Total time required: ${hours} hours and ${minutes} minutes\n${efficiencyText}`;
     document.getElementById('result').textContent = resultText;
 });
+
 
     </script>
 </body>
